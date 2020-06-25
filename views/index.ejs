@@ -1,0 +1,67 @@
+<%- include("partials/header.ejs"); %>
+<%- include("../public/javascripts/functions.ejs"); %>
+<div class="container my-5">
+<div class="row">
+  <div class="col">
+    <% if(info != null && info != {} && info.status != null){ %>
+      <div class="alert alert-<%=info.status%> show alert-dismissible fade" role="alert">
+      <%= info.msg %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+    <% }else{%>
+      <div class="alert" role="alert">
+      </div>
+    <%}%>
+    </div>
+</div>
+<div id="rowMaster" class="row">
+    <div class="col">
+      <form id="newNumberForm" class="form-inline" method="POST" action="/momt">
+            <div class="form-group mx-3">
+                <input type="text"  class="form-control" id="number" name="number" placeholder="Mobile Number" data-rule-digiNum="true">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+       <div class="col">
+        <form  id="uploadFileForm" class="form-inline float-right" method="POST" action="/upload" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="file" name="file" accept=".csv" required>
+                <label id="fileLabel" class="custom-file-label" for="file" aria-describedby="inputGroupFileAddon02">Choose file</label>
+              </div>
+              <div class="input-group-append">
+                <button class="input-group-text btn btn-info" type="submit" id="inputGroupFileAddon02">Upload</button>
+              </div>
+            </div>
+      </form>
+    </div>
+</div>
+
+  
+    <table id="momt" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Mobile Number</th>          
+          <th scope="col">Submitted By</th>
+          <th scope="col">Date Submitted</th>     
+          <th class="no-sort" scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% if(momt && momt.length > 0){ %>
+        <% momt.forEach(num => {%>
+        <tr id="<%=num._id%>">
+            <td><%=num.number%></td>
+            <td><%=num.submittedBy.firstName%> <%=num.submittedBy.lastName%></td>
+            <td><%=formatDate(num.dateAdded)%></td>
+            <td><a class="btn btn-danger text-white delete">Delete</a></td>
+        </tr>
+        <% })%>
+      <% }%>
+      </tbody>
+    </table>
+</div>
+
+<%- include partials/footer.ejs  %> 
+<script type="text/javascript" src="/javascripts/momt.js"></script>
